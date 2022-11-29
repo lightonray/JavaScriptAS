@@ -1,2 +1,2 @@
-# JavaScript AS1
+# JavaScript AS
 
