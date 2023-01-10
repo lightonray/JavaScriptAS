@@ -1,32 +1,41 @@
 let moves = 0;
-let matchedCard = document.getElementsByClassName("match");// declaring variable of matchedCards
-let closeicon = document.querySelector(".close");// close icon in modal
-let closemenu = document.getElementById("closemenu");
-let modal = document.getElementById("popup1")// declare modal
-const deck = document.getElementById("card-deck");// deck of all cards in game
+let matching_Cards = document.getElementsByClassName("match");
+let closedi = document.querySelector(".closed");
+let close_menu = document.getElementById("cmenu");
+
+
+
+
+let modal = document.getElementById("popup")
+const deck = document.getElementById("cdeck");
 let cards = document.querySelectorAll(' .deck .card');
-let hasFlipedCard = false; //check if card opened
-let firstCard, secondCard;
+let isFlipedCard = false; 
+
+
+let first_Card, second_Card;
+
+
+
 let images = document.getElementsByClassName("face");
-let stratmenu = document.getElementById("popup0");
-let Score = document.getElementsByClassName("score"); //players' points 
-let playerScore1 = document.getElementById("score1");  //1 player points 
+let startmenu = document.getElementById("popup2");
+let Score = document.getElementsByClassName("score");  
+let playerScore1 = document.getElementById("score1");   
 
-var turn = 1; //index of curent player
+var turn = 1; 
 
-let names = document.getElementsByClassName("name"); //player names
-
-//player forms
-let formPlayers = [ 
-    document.getElementById("1player"),
-    document.getElementById("2player"),
-    document.getElementById("3player"),
-    document.getElementById("4player")];
-
-let nameScores = document.getElementsByClassName("name-score"); //display player form
+let names = document.getElementsByClassName("name"); 
 
 
-function GetPlayersName() {
+let Players = [ 
+    document.getElementById("firstplayer"),
+    document.getElementById("secondplayer"),
+    document.getElementById("thirdplayer"),
+    document.getElementById("fourthplayer")];
+
+let nameScores = document.getElementsByClassName("name-score");
+
+
+function GetName() {
     let player1 = document.getElementById("player1").value;
     names[0].innerHTML = player1;
     let player2 = document.getElementById("player2").value;
@@ -37,7 +46,7 @@ function GetPlayersName() {
     names[3].innerHTML = player4;
 }
 
-//player-points storage
+
 var PlayersPoints = [
     { Player: names[0], Points: Score[0].value },
     { Player: names[1], Points: Score[1].value },
@@ -50,7 +59,7 @@ let currentPlayer = PlayersPoints[0].Player;
 
 document.getElementById("content2").style.display = "inline";
 let radiobtns = document.getElementsByClassName("radiobutton"); 
-let chosen = 1; //amount of players
+let chosen = 1; 
 radiobtns[0].checked = true;
 function Multiplayer() {
     for (var i = 0; i < radiobtns.length; i++) {
@@ -58,34 +67,34 @@ function Multiplayer() {
     }
     this.checked = true;
     chosen = Number(this.value);
-    DisplayPlayers(); //display forms
+    DisplayPlayer(); 
 }
 
-function DisplayPlayers() {
+function DisplayPlayer() {
     for (var i = 1; i < 4; i++) {
-        formPlayers[i].classList.remove("vis");
+        Players[i].classList.remove("vis");
         nameScores[i].style.display = "none";
     }
     nameScores[0].style.display = "block";
     let l = chosen;
     for (var j = 0; j < l; j++) {
-        formPlayers[j].classList.add("vis");
+        Players[j].classList.add("vis");
         nameScores[j].style.display = "block";
     }
 }
-//display form when button clicked
+
 for (var i = 0; i < radiobtns.length; i++) {
     if (radiobtns[i].disabled === false) {
         radiobtns[i].addEventListener("click", Multiplayer);
     }
 }
 
-//closes menu, but DOSEN'T restart the game, ignoring new parameters (except names)
+
 function CloseMenu() {
-    document.getElementById("closemenu").style.display = "block";
-    closemenu.addEventListener("click", function (e) {
-        GetPlayersName();
-        stratmenu.classList.remove("show");
+    document.getElementById("cmenu").style.display = "block";
+    close_menu.addEventListener("click", function (e) {
+        GetName();
+        startmenu.classList.remove("show");
 
         $(deck).css({ "visibility": "visible" });
         $(".players").css({ "visibility": "visible" });
@@ -98,17 +107,17 @@ function CloseMenu() {
 
 document.body.onload = StartMenu(0); 
 function StartMenu(index) {
-        $(deck).css({ "visibility": "hidden" }); //hide playground
-        $(".players").css({ "visibility": "hidden" }); //hide players' forms
-    stratmenu.classList.add("show"); //display start menu
+        $(deck).css({ "visibility": "hidden" }); 
+        $(".players").css({ "visibility": "hidden" }); 
+    startmenu.classList.add("show"); 
 
-    //remove all markers to restart game
+    
         if (index == 0) {
             for (var i = 0; i < cards.length; i++) {
                 cards[i].classList.remove("show", "open", "match", "disabled"); 
             }
         }
-    //hide all cards NOT to restart game
+   
         else { 
             for (var i = 0; i < cards.length; i++) {
                 cards[i].style.display = "none";
@@ -122,7 +131,7 @@ function StartMenu(index) {
 }
 
 
-var selected = "cats"; //selected playground images theme
+var selected = "cats"; 
 let options = document.getElementsByClassName("option");
 function ChosenOption() {
     this.classList.add("selected");
@@ -139,14 +148,15 @@ for (var i = 0; i < options.length; i++) {
     options[i].addEventListener("click", ChosenOption);
 }
 
- //change playground images theme, based on user's choice 
+ 
 function Theme() {
+    
     var Theme = [];
 
     var ThemeAlts = [];
     for (var i = 0; i < 10; i++) {
         Theme[i] = new Image();
-        Theme[i].src = "imgs/" + selected+"/img" + (i + 1) + ".jpg";
+        Theme[i].src = "imgs/" + selected +"/img" + (i + 1) + ".jpg";
         Theme[i].alt = "img" + (i + 1);
         ThemeAlts[i] = Theme[i].alt;
     }
@@ -159,7 +169,7 @@ function Theme() {
         }
     }
 }
-//shuffle cards
+
 function shuffle(cards) {
     cards.forEach(card => {
         let randomPos = Math.floor(Math.random() * 20);
@@ -168,15 +178,14 @@ function shuffle(cards) {
 };
 
 
-function startGame() {
-    hasFlipedCard = false;
+function start_Game() {
+    isFlipedCard = false;
     document.getElementById("namescore1").style.display = "block";
-    GetPlayersName();
-    stratmenu.classList.remove("show");
+    GetName();
+    startmenu.classList.remove("show");
 
 
-    playerScore1.value = 0; //refresh points counter for 1 player mod 
-    //refresh points counter for multiplayer mode 
+    playerScore1.value = 0;  
     for (var i = 0; i < PlayersPoints.length; i++) {
         PlayersPoints[i].Points = 0;
         Score[i].value = 0;
@@ -189,15 +198,15 @@ function startGame() {
 
     
 
-    $(deck).css({ "visibility": "visible" }); //display playground 
-    $(".players").css({ "visibility": "visible" }); //display player forms in gsme
+    $(deck).css({ "visibility": "visible" }); 
+    $(".players").css({ "visibility": "visible" }); 
 
-    firstCard = 0;
-    secondCard = 0;
+    first_Card = 0;
+    second_Card = 0;
     Theme();
     shuffle(cards);
 
-    // remove all exisiting classes from each card
+    
     for (var i = 0; i < cards.length; i++) {
         deck.innerHTML = "";
         [].forEach.call(cards, function (item) {
@@ -210,7 +219,7 @@ function startGame() {
 
     moves = 0;
 
-    //reset timer
+    
     second = 0;
     minute = 0;
     hour = 0;
@@ -221,20 +230,20 @@ function startGame() {
 
 
 
-//check if card open and make it firstst or second card
+
 function flipCard() {
     this.classList.toggle("open");
     this.classList.toggle("show");
     this.classList.toggle("disabled");
 
-    if (!hasFlipedCard) {
-        hasFlipedCard = true;
-        firstCard = this;
+    if (!isFlipedCard) {
+        isFlipedCard = true;
+        first_Card = this;
     }
     else {
         disablePlayGround();
-        hasFlipedCard = false;
-        secondCard = this;
+        isFlipedCard = false;
+        second_Card = this;
         checkForMatch();
         moveCounter();
         
@@ -242,7 +251,7 @@ function flipCard() {
 }
 
 function checkForMatch() {
-    if (firstCard.dataset.framework === secondCard.dataset.framework) {
+    if (first_Card.dataset.framework === second_Card.dataset.framework) {
         matched();
 
     }
@@ -253,8 +262,8 @@ function checkForMatch() {
 }
 
 function matched() {
-    firstCard.classList.add("match", "disabled");
-    secondCard.classList.add("match", "disabled");
+    first_Card.classList.add("match", "disabled");
+    second_Card.classList.add("match", "disabled");
     
     if (chosen === 1) {
         playerScore1.value++;
@@ -273,29 +282,29 @@ function matched() {
 }
 function unmatched() {
     
-    firstCard.classList.add("unmatched");
-    secondCard.classList.add("unmatched");
+    first_Card.classList.add("unmatched");
+    second_Card.classList.add("unmatched");
     setTimeout(function () {
-        firstCard.classList.remove("open", "unmatched");
-        secondCard.classList.remove("open","unmatched");
+        first_Card.classList.remove("open", "unmatched");
+        second_Card.classList.remove("open","unmatched");
         enable();
     }, 850);
     setTimeout(function () {
-        firstCard.classList.remove("show");
-        secondCard.classList.remove("show");
+        first_Card.classList.remove("show");
+        second_Card.classList.remove("show");
         AblePlayGround();
     }, 900);
 
 }
 
-//disable all cards
+
 function disablePlayGround() {
     for (var c = 0; c < cards.length; c++) {
         card = cards[c];
         card.classList.add("disableplayground");
     }
 } 
-//unblock plauground
+
 function AblePlayGround() {
     for (var c = 0; c < cards.length; c++) {
         card = cards[c];
@@ -305,23 +314,23 @@ function AblePlayGround() {
 }
 
 
-//enable cards and disable matched cards
+
 function enable() {
     Array.prototype.filter.call(cards, function (card) {
         card.classList.remove('disabled');
-        for (var i = 0; i < matchedCard.length; i++) {
-            matchedCard[i].classList.add("disabled");
+        for (var i = 0; i < matching_Cards.length; i++) {
+            matching_Cards[i].classList.add("disabled");
         }
     });
 }
 
 
 
-//count player's moves
+
 function moveCounter() {
     moves++;
-    //after one move ==> next player's turn (until all cards will be opened)
-    if (matchedCard.length !== 20) {
+    
+    if (matching_Cards.length !== 20) {
         if (chosen == 4 && turn == 4) {
             PlayersPoints[3].Player.classList.remove("turn");
             turn = 5;
@@ -342,7 +351,7 @@ function moveCounter() {
     }
 
 
-    //start timer on first click
+
     if (moves == 1) {
         second = 0;
         minute = 0;
@@ -355,7 +364,7 @@ function moveCounter() {
 
 
 
-// game timer
+
 var second = 0, minute = 0; hour = 0;
 var timer = document.querySelector(".timer");
 var interval;
@@ -376,9 +385,9 @@ function startTimer() {
 
 
 
-//congratulations when all cards match, show modal and moves, time and rating
+
 function congratulations() {
-    if (matchedCard.length == 20) {
+    if (matching_Cards.length == 20) {
         var b = 0;
         while (b < 4) {
             PlayersPoints[b].Player.classList.remove("turn");
@@ -388,14 +397,14 @@ function congratulations() {
         clearInterval(interval);
         finalTime = timer.innerHTML;
 
-        // show congratulations modal
+        
         modal.classList.add("show");
        
       
         
         document.getElementById("youwinner").classList.add("show");
         document.getElementById("totalTime").innerHTML = finalTime;
-        //1 player mode
+        
         if (chosen == 1) {
             document.getElementById("finalMove").innerHTML = moves;
             document.getElementById("playername").innerHTML = names[0].innerHTML + "!";
@@ -404,7 +413,7 @@ function congratulations() {
 
             document.getElementById("congrats2").style.display = "none";
         }      
-        //multiplayer mode
+        
         else {
             document.getElementById("youwinner").classList.add("show");
             document.getElementById("loserscore").style.display = "inline-flex";
@@ -413,21 +422,21 @@ function congratulations() {
             document.getElementById("movescount").style.display = "none";
 
 
-            let SortedPlayersPoints = [];//storage for sorted player-points array in descending order
+            let SortedPlayersPoints = [];
             for (let i = 0; i < 4; i++) {
                 SortedPlayersPoints[i] = { Points: Score[i].value, Name: PlayersPoints[i].Player.innerHTML };
             }
             SortedPlayersPoints = SortedPlayersPoints.sort(function (a, b) { return b.Points - a.Points });           
 
-            if (SortedPlayersPoints[0].Points == SortedPlayersPoints[chosen - 1].Points) {  // if all equals
-                document.getElementById("congrats2").style.display = "inline-flex"; //if draw game
+            if (SortedPlayersPoints[0].Points == SortedPlayersPoints[chosen - 1].Points) {  
+                document.getElementById("congrats2").style.display = "inline-flex"; 
                 document.getElementById("congrats1").style.display = "none";
             }
             else {
                 document.getElementById("congrats2").style.display = "none";
                 document.getElementById("congrats1").style.display = "inline-flex";
-                let Winners = SortedPlayersPoints[0].Name; //player with biggest amount of points (first winner)
-                //if not 1 winner
+                let Winners = SortedPlayersPoints[0].Name; 
+
                 for (let i = 1; i < chosen; i++) {
                     if (SortedPlayersPoints[i].Points == SortedPlayersPoints[0].Points) {
                         Winners += ", " + SortedPlayersPoints[i].Name;
@@ -437,7 +446,7 @@ function congratulations() {
                 Winners += "!";
                 document.getElementById("playername").innerHTML = Winners;
             }
-            //display all players and their points
+            
 
             document.getElementById("winnername").innerHTML = SortedPlayersPoints[0].Name + ":";
             document.getElementById("firstscore").innerHTML = SortedPlayersPoints[0].Points;
@@ -445,7 +454,7 @@ function congratulations() {
             document.getElementById("loser1name").innerHTML = SortedPlayersPoints[1].Name + ":";
             document.getElementById("loser1score").innerHTML = SortedPlayersPoints[1].Points;
 
-            //hide player-points form if chosen amount players< max possible amount
+            
             if (chosen == 2) {
                 
                 document.getElementById("loser2").style.display = "none";
@@ -466,23 +475,23 @@ function congratulations() {
                 document.getElementById("loser3score").innerHTML = SortedPlayersPoints[3].Points;         
             }
         }
-        //close modal window
+        
         closeModal();
     };
 }
 
 
-//close icon on modal
+
 function closeModal() {
-    closeicon.addEventListener("click", function (e) {
+    closedi.addEventListener("click", function (e) {
         modal.classList.remove("show");
-        startGame();
+        start_Game();
     });
 }
 
-function playAgain() {
+function play_Again() {
     modal.classList.remove("show");
-    startGame();
+    start_Game();
 }
 
 for (var i = 0; i < cards.length; i++) {

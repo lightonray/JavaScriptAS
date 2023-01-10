@@ -311,7 +311,7 @@ h1 {
 
 
 /*
- * Styles for the Score Panel
+ * Score Panel
  */
 .score-panel {
     text-align: left;
@@ -346,7 +346,7 @@ h1 {
 
 
 
-/*players*/
+/*player*/
 
 .players {
     display: flex;
