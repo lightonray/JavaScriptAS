@@ -1,3 +1,6 @@
+
+
+
 let moves = 0;
 let matching_Cards = document.getElementsByClassName("match");
 let closedi = document.querySelector(".closed");
